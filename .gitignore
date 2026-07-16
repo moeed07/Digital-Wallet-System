@@ -1,0 +1,6 @@
+wallet.exe
+*.exe
+*.o
+*.out
+.vscode/
+output/
