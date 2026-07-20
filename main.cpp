@@ -36,17 +36,48 @@ int main() {
             cout << "Enter your PIN: ";
             getline(cin, pin);
 
-            bool found = false;
+            int loggedInIndex = -1;
             for (int i = 0; i < userCount; i++) {
                 if (users[i]->getPhoneNumber() == phone && users[i]->checkPin(pin)) {
-                    cout << "Login successful. Welcome " << users[i]->getName() << "!" << endl;
-                    cout << "Your balance is: " << users[i]->getBalance() << endl;
-                    found = true;
+                    loggedInIndex = i;
                     break;
                 }
             }
-            if (!found) {
+
+            if (loggedInIndex == -1) {
                 cout << "Wrong phone number or PIN." << endl;
+            }
+            else {
+                cout << "Login successful. Welcome " << users[loggedInIndex]->getName() << "!" << endl;
+
+                int accountChoice;
+                do {
+                    cout << endl;
+                    cout << "1. Check Balance" << endl;
+                    cout << "2. Deposit Money" << endl;
+                    cout << "3. Logout" << endl;
+                    cout << "Enter choice: ";
+                    cin >> accountChoice;
+                    cin.ignore();
+
+                    if (accountChoice == 1) {
+                        cout << "Your balance is: " << users[loggedInIndex]->getBalance() << endl;
+                    }
+                    else if (accountChoice == 2) {
+                        double amount;
+                        cout << "Enter amount to deposit: ";
+                        cin >> amount;
+                        cin.ignore();
+
+                        if (amount > 0) {
+                            users[loggedInIndex]->addBalance(amount);
+                            cout << "Deposit successful. New balance: " << users[loggedInIndex]->getBalance() << endl;
+                        }
+                        else {
+                            cout << "Enter a valid amount." << endl;
+                        }
+                    }
+                } while (accountChoice != 3);
             }
         }
     } while (choice != 3);
