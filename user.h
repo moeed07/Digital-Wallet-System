@@ -16,4 +16,5 @@ public:
     bool checkPin(string enteredPin);
     double getBalance();
     void addBalance(double amount);
+    bool subtractBalance(double amount);
 };

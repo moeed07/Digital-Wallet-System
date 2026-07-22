@@ -28,3 +28,11 @@ double User::getBalance() {
 void User::addBalance(double amount) {
     balance = balance + amount;
 }
+
+bool User::subtractBalance(double amount) {
+    if (amount > balance) {
+        return false;
+    }
+    balance = balance - amount;
+    return true;
+}

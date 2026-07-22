@@ -55,7 +55,8 @@ int main() {
                     cout << endl;
                     cout << "1. Check Balance" << endl;
                     cout << "2. Deposit Money" << endl;
-                    cout << "3. Logout" << endl;
+                    cout << "3. Send Money" << endl;
+                    cout << "4. Logout" << endl;
                     cout << "Enter choice: ";
                     cin >> accountChoice;
                     cin.ignore();
@@ -77,7 +78,48 @@ int main() {
                             cout << "Enter a valid amount." << endl;
                         }
                     }
-                } while (accountChoice != 3);
+                    else if (accountChoice == 3) {
+                        string receiverPhone;
+                        cout << "Enter receiver's phone number: ";
+                        getline(cin, receiverPhone);
+
+                        int receiverIndex = -1;
+                        for (int i = 0; i < userCount; i++) {
+                            if (users[i]->getPhoneNumber() == receiverPhone) {
+                                receiverIndex = i;
+                                break;
+                            }
+                        }
+
+                        if (receiverIndex == -1) {
+                            cout << "No user found with that phone number." << endl;
+                        }
+                        else if (receiverIndex == loggedInIndex) {
+                            cout << "You cannot send money to yourself." << endl;
+                        }
+                        else {
+                            double amount;
+                            cout << "Enter amount to send: ";
+                            cin >> amount;
+                            cin.ignore();
+
+                            if (amount <= 0) {
+                                cout << "Enter a valid amount." << endl;
+                            }
+                            else {
+                                bool success = users[loggedInIndex]->subtractBalance(amount);
+                                if (success) {
+                                    users[receiverIndex]->addBalance(amount);
+                                    cout << "Sent " << amount << " to " << users[receiverIndex]->getName() << endl;
+                                    cout << "Your new balance: " << users[loggedInIndex]->getBalance() << endl;
+                                }
+                                else {
+                                    cout << "Insufficient balance." << endl;
+                                }
+                            }
+                        }
+                    }
+                } while (accountChoice != 4);
             }
         }
     } while (choice != 3);
